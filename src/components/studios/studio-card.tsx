@@ -1,67 +1,56 @@
-import Link from "next/link";
 import Image from "next/image";
-import { MapPin, Star, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import type { Studio } from "@/types";
-
-interface StudioCardProps {
-  studio: Studio;
+export interface IStudio {
+     id?: string;
+  _id?: string;
+  title: string;
+  category: string;
+  hourlyRate: string;
+  location: string;
+  imageUrl: string;
+  amenities: string[];
+  overview: string;
 }
-export function StudioCard({ studio }: StudioCardProps) {
+const StudioCard = ({ studio }: { studio: IStudio }) => {
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_16px_48px_-16px_oklch(0.79_0.155_75/0.2)]">
-      {/* Image */}
-      <div className="relative aspect-4/3 overflow-hidden">
+    <div className="overflow-hidden rounded-xl border shadow-sm">
       <Image
-  src={studio.image}
-  alt={studio.name}
-  fill
-  loading="eager"
-  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-  className="object-cover"
-/>
+        src={studio.imageUrl}
+        alt={studio.title}
+        width={500}
+        height={300}
+        className="h-52 w-full object-cover"
+      />
 
-        <div className="absolute inset-0 bg-linear-to-t from-card/80 via-transparent to-transparent" />
-        <div className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-background/80 px-2 py-1 text-xs font-medium text-foreground backdrop-blur-sm">
-          <Star className="size-3.5 fill-primary text-primary" />
-          {studio.rating.toFixed(1)}
-          <span className="text-muted-foreground">({studio.reviews})</span>
-        </div>
-      </div>
-
-      {/* Body */}
-      <div className="flex flex-1 flex-col gap-3 p-5">
+      <div className="space-y-3 p-5">
         <div>
-          <h3 className="font-heading text-lg leading-snug font-semibold text-foreground transition-colors group-hover:text-primary">
-            {studio.name}
-          </h3>
-
-          <p className="mt-1.5 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="size-3.5 shrink-0" />
+          <p className="text-sm text-primary">{studio.category}</p>
+          <h2 className="text-xl font-semibold">{studio.title}</h2>
+          <p className="text-sm text-muted-foreground">
             {studio.location}
           </p>
         </div>
 
-        <div className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
-          <p className="flex items-baseline gap-1">
-            <span className="font-heading text-xl font-semibold text-primary">
-              ${studio.pricePerHour}
-            </span>
-            <span className="text-xs text-muted-foreground">/ hour</span>
-          </p>
+        <p className="text-sm text-muted-foreground">
+          {studio.overview}
+        </p>
 
-          <Link href={`/studios?category=${studio.category}`}>
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-border cursor-pointer bg-background/50 hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
+        <div className="flex flex-wrap gap-2">
+          {studio.amenities.map((amenity) => (
+            <span
+              key={amenity}
+              className="rounded-full bg-muted px-3 py-1 text-xs"
             >
-              <Clock className="size-3.5" />
-              View Details
-            </Button>
-          </Link>
+              {amenity}
+            </span>
+          ))}
         </div>
+
+        <p className="font-semibold">
+          ${studio.hourlyRate} <span className="text-sm font-normal">/ hour</span>
+        </p>
       </div>
-    </article>
+    </div>
   );
-}
+};
+
+export default StudioCard;

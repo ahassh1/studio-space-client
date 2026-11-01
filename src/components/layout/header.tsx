@@ -26,7 +26,6 @@ export function Header() {
     () => true,
     () => false
   );
-
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 text-foreground backdrop-blur">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">

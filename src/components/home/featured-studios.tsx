@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { StudioCard } from "@/components/studios/studio-card";
-import { featuredStudios } from "@/data/studios";
+import StudioCard, { IStudio } from "../studios/studio-card";
 
-export function FeaturedStudios() {
+export async function FeaturedStudios() {
+  const res = await fetch("http://localhost:8000/studios");
+  const data: IStudio[] = await res.json();
+
   return (
     <section
       aria-labelledby="featured-heading"
@@ -14,7 +16,7 @@ export function FeaturedStudios() {
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
             <p className="flex items-center gap-3 text-xs font-medium tracking-[0.22em] text-primary uppercase">
-              <span className="h-px w-8 bg-primary/60" aria-hidden="true" />
+              <span className="h-px w-8 bg-primary/60" />
               Featured this week
             </p>
 
@@ -30,20 +32,21 @@ export function FeaturedStudios() {
               ready to book by the hour.
             </p>
           </div>
-  <Link href="/studios">
-  <Button
-    variant="outline"
-    className="h-10 shrink-0 cursor-pointer self-start border-border bg-background/50 px-5 text-sm font-semibold hover:border-primary/40 hover:bg-primary/10 hover:text-primary sm:self-auto"
-  >
-    Browse all studios
-    <ArrowRight className="size-4" />
-  </Button>
-</Link>
+
+          <Link href="/studios">
+            <Button
+              variant="outline"
+              className="h-10 shrink-0 cursor-pointer self-start border-border bg-background/50 px-5 text-sm font-semibold hover:border-primary/40 hover:bg-primary/10 hover:text-primary sm:self-auto"
+            >
+              Browse all studios
+              <ArrowRight className="size-4" />
+            </Button>
+          </Link>
         </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
-          {featuredStudios.map((studio) => (
-            <StudioCard key={studio.id} studio={studio} />
+          {data.slice(0, 3).map((studio) => (
+            <StudioCard key={studio._id} studio={studio} />
           ))}
         </div>
       </div>
