@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import { Inter, Josefin_Sans } from "next/font/google";
 import { Header } from "@/components/layout/header";
@@ -33,13 +32,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body className={`${inter.variable} ${josefinSans.variable} flex min-h-screen flex-col antialiased`}>
         <ThemeProvider>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
-        </ThemeProvider>
+        </ThemeProvider> 
       </body>
     </html>
   );
