@@ -1,158 +1,156 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-
+import { useTheme } from "next-themes";
+import { useState, useSyncExternalStore } from "react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
 
+const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "Browse Studios", href: "/studios" },
+  { name: "How It Works", href: "/how-it-works" },
+  { name: "About", href: "/about" },
+];
+
 export function Header() {
-  const [open, setOpen] = useState(false);
-
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
 
-  // Navigation styles
-  const activeClass =
-    "rounded-md bg-primary/10 px-3 py-2 font-semibold text-primary";
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const normalClass =
-    "rounded-md px-3 py-2 font-medium text-foreground transition-colors hover:bg-muted";
-
-  // Check active route
-  const isActive = (href: string) => {
-    if (href === "/") {
-      return pathname === "/";
-    }
-
-    return pathname === href || pathname.startsWith(`${href}/`);
-  };
+  // Check theme mounting
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 text-foreground backdrop-blur">
-      <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
-        {/* Logo */}
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Logo />
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-1 lg:flex">
-          <Link href="/" className={isActive("/") ? activeClass : normalClass}>
-            Home
-          </Link>
-
-          <Link
-            href="/studios"
-            className={isActive("/studios") ? activeClass : normalClass}
-          >
-            Explore Studios
-          </Link>
-
-          <Link
-            href="/how-it-works"
-            className={isActive("/how-it-works") ? activeClass : normalClass}
-          >
-            How It Works
-          </Link>
-
-          <Link
-            href="/about"
-            className={isActive("/about") ? activeClass : normalClass}
-          >
-            About Us
-          </Link>
+        <nav className="hidden items-center gap-7 md:flex">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`cursor-pointer text-sm transition-colors ${
+                pathname === link.href ||
+                (link.href === "/studios" &&
+                  pathname.startsWith("/studios/"))
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
         </nav>
 
-        {/* Header Actions */}
         <div className="flex shrink-0 items-center gap-2">
+          {/* Theme Toggle */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() =>
+              setTheme(theme === "dark" ? "light" : "dark")
+            }
+            aria-label="Toggle theme"
+            className="cursor-pointer"
+          >
+            {mounted && theme === "dark" ? (
+              <Sun className="size-5" />
+            ) : mounted ? (
+              <Moon className="size-5" />
+            ) : (
+              <span className="size-5" />
+            )}
+          </Button>
+
           {/* Authentication Buttons */}
           <div className="hidden items-center gap-2 sm:flex">
             <Link href="/login" className="cursor-pointer">
-              <Button
-                variant="outline"
-                className="cursor-pointer border-border text-foreground hover:bg-muted"
-              >
+              <Button variant="ghost" className="cursor-pointer">
                 Login
               </Button>
             </Link>
 
             <Link href="/register" className="cursor-pointer">
-              <Button className="cursor-pointer">Register</Button>
+              <Button className="cursor-pointer">
+                Get Started
+              </Button>
             </Link>
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Button */}
           <Button
             variant="ghost"
             size="icon"
-            className="cursor-pointer text-foreground hover:bg-muted lg:hidden"
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle navigation menu"
-            aria-expanded={open}
+            className="cursor-pointer md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle mobile menu"
           >
-            {open ? <X /> : <Menu />}
+            {mobileMenuOpen ? (
+              <X className="size-5" />
+            ) : (
+              <Menu className="size-5" />
+            )}
           </Button>
         </div>
       </div>
 
       {/* Mobile Navigation */}
-      {open && (
-        <nav className="flex flex-col gap-2 border-t border-border bg-background p-4 text-foreground lg:hidden">
-          <Link
-            href="/"
-            onClick={() => setOpen(false)}
-            className={`cursor-pointer ${isActive("/") ? activeClass : normalClass}`}
-          >
-            Home
-          </Link>
-
-          <Link
-            href="/studios"
-            onClick={() => setOpen(false)}
-            className={`cursor-pointer ${isActive("/studios") ? activeClass : normalClass}`}
-          >
-            Explore Studios
-          </Link>
-
-          <Link
-            href="/how-it-works"
-            onClick={() => setOpen(false)}
-            className={`cursor-pointer ${isActive("/how-it-works") ? activeClass : normalClass}`}
-          >
-            How It Works
-          </Link>
-
-          <Link
-            href="/about"
-            onClick={() => setOpen(false)}
-            className={`cursor-pointer ${isActive("/about") ? activeClass : normalClass}`}
-          >
-            About Us
-          </Link>
-
-          {/* Mobile Authentication */}
-          <div className="mt-2 flex gap-2 border-t border-border pt-4">
-            <Link
-              href="/login"
-              className="flex-1 cursor-pointer"
-              onClick={() => setOpen(false)}
-            >
-              <Button
-                variant="outline"
-                className="w-full cursor-pointer border-border text-foreground"
+      {mobileMenuOpen && (
+        <div className="border-t border-border bg-background px-4 py-4 md:hidden">
+          <nav className="flex flex-col gap-4">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`cursor-pointer text-sm transition-colors ${
+                  pathname === link.href ||
+                  (link.href === "/studios" &&
+                    pathname.startsWith("/studios/"))
+                    ? "font-semibold text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
               >
-                Login
-              </Button>
-            </Link>
+                {link.name}
+              </Link>
+            ))}
 
-            <Link
-              href="/register"
-              className="flex-1 cursor-pointer"
-              onClick={() => setOpen(false)}
-            >
-              <Button className="w-full cursor-pointer">Register</Button>
-            </Link>
-          </div>
-        </nav>
+            {/* Mobile Authentication */}
+            <div className="flex gap-2 border-t border-border pt-4 sm:hidden">
+              <Link
+                href="/login"
+                className="flex-1 cursor-pointer"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Button
+                  variant="outline"
+                  className="w-full cursor-pointer"
+                >
+                  Login
+                </Button>
+              </Link>
+
+              <Link
+                href="/register"
+                className="flex-1 cursor-pointer"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Button className="w-full cursor-pointer">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          </nav>
+        </div>
       )}
     </header>
   );

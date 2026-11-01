@@ -12,13 +12,14 @@ export function StudioCard({ studio }: StudioCardProps) {
     <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_16px_48px_-16px_oklch(0.79_0.155_75/0.2)]">
       {/* Image */}
       <div className="relative aspect-4/3 overflow-hidden">
-        <Image
-          src={studio.image}
-          alt={studio.name}
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+      <Image
+  src={studio.image}
+  alt={studio.name}
+  fill
+  loading="eager"
+  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+  className="object-cover"
+/>
 
         <div className="absolute inset-0 bg-linear-to-t from-card/80 via-transparent to-transparent" />
         <div className="absolute top-3 right-3 flex items-center gap-1 rounded-full bg-background/80 px-2 py-1 text-xs font-medium text-foreground backdrop-blur-sm">
