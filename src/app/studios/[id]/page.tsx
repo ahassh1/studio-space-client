@@ -1,5 +1,4 @@
 import StudioDetailsContent from "@/components/studios/studio-details-content";
-
 export interface IStudio {
   _id: string;
   title: string;
@@ -14,6 +13,7 @@ export interface IStudio {
   userName: string;
   userEmail: string;
 }
+
 const StudioDetails = async ({
   params,
 }: {
@@ -21,10 +21,15 @@ const StudioDetails = async ({
 }) => {
   const { id } = await params;
 
-  const res = await fetch(`http://localhost:8000/studios/${id}`)
+  const res = await fetch(`http://localhost:8000/studios/${id}`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch studio details");
+  }
 
   const data: IStudio = await res.json();
+  console.log(data)
+
   return <StudioDetailsContent studio={data} />;
 };
-
 export default StudioDetails;
