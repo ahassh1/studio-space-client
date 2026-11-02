@@ -10,6 +10,9 @@ import { Logo } from "@/components/shared/logo";
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Browse Studios", href: "/studios" },
+  // { name: "My Listings", href: "/my-listings" },
+  // { name: "Add Studio", href: "/add-studio" },
+  // { name: "My Bookings", href: "/my-bookings" },
   { name: "How It Works", href: "/how-it-works" },
   { name: "About Us", href: "/about" },
 ];
