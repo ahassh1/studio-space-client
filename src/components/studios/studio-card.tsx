@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowUpRight, MapPin } from "lucide-react";
 
 export interface IStudio {
-  id?: string;
   _id?: string;
   title: string;
   category: string;
@@ -60,7 +59,7 @@ const StudioCard = ({ studio }: { studio: IStudio }) => {
           </div>
 
           <Link
-            href={`/studios/${studio._id ?? studio.id}`}
+            href={`/studios/${studio._id}`}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary/70"
           >
             View Details

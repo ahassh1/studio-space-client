@@ -11,7 +11,7 @@ const navLinks = [
   { name: "Home", href: "/" },
   { name: "Browse Studios", href: "/studios" },
   { name: "How It Works", href: "/how-it-works" },
-  { name: "About", href: "/about" },
+  { name: "About Us", href: "/about" },
 ];
 
 export function Header() {

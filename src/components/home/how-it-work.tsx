@@ -1,16 +1,33 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  CalendarClock,
-  Clapperboard,
-  CreditCard,
-  Search,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { bookingSteps } from "@/data/site";
+import {
+  Search,
+  CalendarClock,
+  SlidersHorizontal,
+  CalendarDays,
+  Clock,
+  ClipboardCheck,
+  BellRing,
+  Clapperboard,
+  ArrowRight,
+} from "lucide-react";
 
-const stepIcons = [Search, CalendarClock, CreditCard, Clapperboard];
-export function HowItWorks() {
+const stepIcons = [
+  Search,
+  CalendarClock,
+  SlidersHorizontal,
+  CalendarDays,
+  Clock,
+  ClipboardCheck,
+  BellRing,
+  Clapperboard,
+];
+interface HowItWorkProps {
+  limit?: number;
+}
+export function HowItWork({limit}:HowItWorkProps) {
+  const steps = limit ? bookingSteps.slice(0, limit) : bookingSteps;   // Limit displayed steps
   return (
     <section
       aria-labelledby="how-it-works-heading"
@@ -38,7 +55,7 @@ export function HowItWorks() {
         </div>
 
         <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-5">
-          {bookingSteps.map((step, index) => {
+          {steps.map((step, index) => {
                 const Icon = stepIcons[index];
             return (
               <li

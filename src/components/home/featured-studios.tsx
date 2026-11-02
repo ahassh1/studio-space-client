@@ -45,7 +45,7 @@ export async function FeaturedStudios() {
         </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
-          {data.slice(0, 3).map((studio) => (
+          {data.slice(0, 6).map((studio) => (
             <StudioCard key={studio._id} studio={studio} />
           ))}
         </div>
