@@ -27,6 +27,13 @@ const { data, error } = await authClient.signIn.email({
     if (error) throw new Error(error.message);
     if (data) redirect("/");
   };
+  // Handle Google login
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4 py-10">
@@ -113,7 +120,7 @@ const { data, error } = await authClient.signIn.email({
         </div>
 
         {/* Google Login */}
-        <Button
+        <Button onClick={handleGoogleSignIn}
           type="button"
           variant="outline"
           className="w-full cursor-pointer"

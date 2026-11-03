@@ -126,7 +126,6 @@ export function Header() {
                   </button>
                 }
               />
-
               <PopoverContent
                 align="end"
                 className="w-64 border border-border bg-popover p-2 text-popover-foreground shadow-lg"
