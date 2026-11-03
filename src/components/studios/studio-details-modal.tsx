@@ -3,7 +3,8 @@ import { useState, type FormEvent } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { IStudio } from "@/app/studios/[id]/page";
-// Modal component props
+import { useRouter } from "next/navigation";
+
 interface StudioDetailsModalProps {
   studio: IStudio;
   isOpen: boolean;
@@ -15,6 +16,8 @@ export default function StudioDetailsModal({
   isOpen,
   onClose,
 }: StudioDetailsModalProps) {
+  const router = useRouter();
+
   // Booking form states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,56 +38,48 @@ export default function StudioDetailsModal({
     setLoading(true);
     setMessage("");
 
-    try {
-      // Prepare booking data
-      const bookingData = {
-        studioId: studio._id,
-        studioTitle: studio.title,
-        userName: name,
-        userEmail: email,
-        bookingDate,
-        startTime,
-        hours,
-        hourlyRate: studio.hourlyRate,
-        totalPrice,
-        securityDeposit: studio.securityDeposit,
-      };
+// Prepare booking data
+const bookingData = {
+  studioId: studio._id,
+  studioTitle: studio.title,
+  imageUrl: studio.imageUrl,
+  userName: name,
+  userEmail: email,
+  bookingDate,
+  startTime,
+  hours,
+  hourlyRate: studio.hourlyRate,
+  totalPrice,
+  securityDeposit: studio.securityDeposit,
+};
+    // Send booking request
+    const res = await fetch("http://localhost:8000/dashboard/my-bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookingData),
+    });
 
-      // Send booking request
-      const res = await fetch(
-        "http://localhost:8000/studios/my-bookings",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bookingData),
-        }
-      );
-
-      // Check response status
-      if (!res.ok) {
-        throw new Error("Booking submission failed.");
-      }
-
-      // Show success message
-      setMessage("Booking submitted successfully!");
-
-      // Reset form fields
-      setName("");
-      setEmail("");
-      setBookingDate("");
-      setStartTime("");
-      setHours(1);
-    } catch (error) {
-      // Handle booking errors
-      setMessage(
-        error instanceof Error ? error.message : "Something went wrong."
-      );
-    } finally {
-      // Finish loading state
+    // Check response status
+    if (!res.ok) {
+      setMessage("Booking submission failed.");
       setLoading(false);
+      return;
     }
+
+    // Show success message
+    setMessage("Booking submitted successfully!");
+
+    // Reset form fields
+    setName("");
+    setEmail("");
+    setBookingDate("");
+    setStartTime("");
+    setHours(1);
+
+    setLoading(false);
+    router.push("/dashboard/my-bookings");
   };
 
   // Check modal visibility
@@ -93,7 +88,6 @@ export default function StudioDetailsModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
       <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-background p-6 shadow-xl">
-
         {/* Modal heading section */}
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-xl font-semibold">Book Workspace</h2>
@@ -115,7 +109,6 @@ export default function StudioDetailsModal({
 
         {/* Booking form fields */}
         <form onSubmit={handleSubmit} className="space-y-4">
-
           {/* Customer name field */}
           <div>
             <label className="mb-2 block text-sm font-medium">
@@ -205,7 +198,11 @@ export default function StudioDetailsModal({
           )}
 
           {/* Submit booking information */}
-          <Button type="submit" disabled={loading} className="w-full">
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full cursor-pointer"
+          >
             {loading ? "Submitting..." : "Add Booking"}
           </Button>
         </form>

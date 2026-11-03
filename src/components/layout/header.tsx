@@ -28,10 +28,10 @@ import {
 
 const navLinks = [
   { name: "Home", href: "/" },
-  { name: "Browse Studios", href: "/studios" },
-  // { name: "My Listings", href: "/my-listings" },
-  // { name: "Add Studio", href: "/add-studio" },
-  // { name: "My Bookings", href: "/my-bookings" },
+  { name: "Studios", href: "/studios" },
+  { name: "My Bookings", href: "/dashboard/my-bookings" },
+  { name: "Add Studio", href: "/dashboard/add-studio" },
+  { name: "My Listings", href: "/dashboard/my-listings" },
   { name: "How It Works", href: "/how-it-works" },
   { name: "About Us", href: "/about" },
 ];
@@ -141,8 +141,15 @@ export function Header() {
 
                 {/* User Navigation */}
                 <div className="flex flex-col gap-1 py-2">
+                       <Link
+                    href="/dashboard/my-bookings"
+                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <CalendarDays className="size-4" />
+                    My Bookings
+                  </Link>
                   <Link
-                    href="/add-studio"
+                    href="/dashboard/add-studio"
                     className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
                   >
                     <PlusCircle className="size-4" />
@@ -150,15 +157,7 @@ export function Header() {
                   </Link>
 
                   <Link
-                    href="/my-bookings"
-                    className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
-                  >
-                    <CalendarDays className="size-4" />
-                    My Bookings
-                  </Link>
-
-                  <Link
-                    href="/my-listings"
+                    href="/dashboard/my-listings"
                     className="flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
                   >
                     <Building2 className="size-4" />

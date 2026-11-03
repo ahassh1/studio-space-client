@@ -81,7 +81,7 @@ export default function AddStudioPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const res = await fetch("http://localhost:8000/add-studio", {
+    const res = await fetch("http://localhost:8000/dashboard/add-studio", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -368,7 +368,7 @@ export default function AddStudioPage() {
 
             <Button type="submit" className="cursor-pointer">
               <Plus />
-              Add New Studio
+              Add Studio in list
             </Button>
           </div>
         </form>

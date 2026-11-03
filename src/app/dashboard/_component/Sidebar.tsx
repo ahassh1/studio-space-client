@@ -18,8 +18,8 @@ import { cn } from "@/lib/utils";
 
 // Dashboard navigation items
 const navItems = [
-  { name: "Add Studio", href: "/dashboard/add-studio", icon: Plus },
   { name: "My Bookings", href: "/dashboard/my-bookings", icon: CalendarDays },
+  { name: "Add Studio", href: "/dashboard/add-studio", icon: Plus },
   { name: "My Listings", href: "/dashboard/my-listings", icon: LayoutGrid },
 ];
 
