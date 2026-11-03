@@ -27,9 +27,8 @@ const StudioDetails = async ({
     throw new Error("Failed to fetch studio details");
   }
 
-  const data: IStudio = await res.json();
+  const data: IStudio = await res.json();   // Parse studio response
   console.log(data)
-
   return <StudioDetailsContent studio={data} />;
 };
 export default StudioDetails;
