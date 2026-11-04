@@ -12,8 +12,6 @@ import {
   Plus,
   X,
 } from "lucide-react";
-
-import { Logo } from "@/components/shared/logo";
 import { cn } from "@/lib/utils";
 
 // Dashboard navigation items
@@ -44,33 +42,36 @@ export default function Sidebar() {
           <Menu className="size-5" />
         </button>
 
-        <Logo href="/studios" className="text-lg" markClassName="size-8" />
+       <h1 className="text-lg font-bold tracking-tight text-foreground">
+  Dashboard
+</h1>
       </div>
 
-      {/* Desktop sidebar */}
-      <aside
-        className={cn(
-          "sticky top-16 hidden h-[calc(100vh-4rem)] shrink-0 flex-col border-r bg-card transition-all duration-300 md:flex",
-          collapsed ? "w-20" : "w-64"
-        )}
-      >
-        {/* Sidebar logo */}
-        <div
-          className={cn(
-            "flex h-16 items-center border-b px-4",
-            collapsed && "justify-center px-0"
-          )}
-        >
-          <Logo
-            href="/studios"
-            className={cn("text-lg", collapsed && "[&>span:last-child]:hidden")}
-            markClassName="size-8"
-          />
-        </div>
+    {/* Desktop sidebar */}
+<aside
+  className={cn(
+    "sticky top-16 hidden h-[calc(100vh-4rem)] shrink-0 flex-col border-r bg-card transition-all duration-300 md:flex",
+    collapsed ? "w-20" : "w-64"
+  )}
+>
+  <div
+    className={cn(
+      "flex h-20 flex-col justify-center border-b px-6",
+      collapsed && "items-center px-0"
+    )}
+  >
+    {!collapsed && (
+      <>
+        <h1 className="text-[23px] font-bold tracking-tight text-slate-700 dark:text-slate-300">
+          Dashboard
+        </h1>
 
-        <p className="px-5 py-4 text-xs font-semibold uppercase text-muted-foreground">
-          {!collapsed && "Workspace"}
+        <p className="mt-1 text-[13px] pt-.5 font-medium tracking-wide text-slate-500 dark:text-slate-400">
+          Manage Workspace
         </p>
+      </>
+    )}
+  </div>
 
         {/* Desktop navigation links */}
         <nav className="flex flex-col gap-2 px-3">
@@ -131,7 +132,7 @@ export default function Sidebar() {
 
       {/* Mobile sidebar drawer */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-[60] md:hidden">
+        <div className="fixed inset-0 z-60 md:hidden">
           {/* Close drawer background */}
           <button
             onClick={closeMobile}
@@ -141,7 +142,6 @@ export default function Sidebar() {
 
           <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-card shadow-xl">
             <div className="flex h-16 items-center justify-between border-b p-4">
-              <Logo href="/studios" className="text-lg" markClassName="size-8" />
 
               <button onClick={closeMobile} aria-label="Close menu">
                 <X className="size-5" />

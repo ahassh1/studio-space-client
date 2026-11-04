@@ -49,7 +49,7 @@ const BookingPage = async () => {
           </div>
         ) : (
           /* Empty booking state */
-          <div className="flex min-h-[350px] flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center dark:border-slate-700 dark:bg-slate-900">
+          <div className="flex min-h-88 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center dark:border-slate-700 dark:bg-slate-900">
             <div className="mb-5 rounded-2xl bg-primary/10 p-5 text-primary">
               <ClipboardList className="size-10" />
             </div>
