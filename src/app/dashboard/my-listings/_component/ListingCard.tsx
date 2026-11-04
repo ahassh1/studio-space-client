@@ -19,30 +19,8 @@ interface IListingCardProps {
   listing: IListing;
 }
 const ListingCard = ({ listing }: IListingCardProps) => {
-//   const router = useRouter();
-
-//   // Delete listing
-//   const handleDelete = async () => {
-//     const confirmDelete = window.confirm(
-//       "Are you sure you want to delete this listing?"
-//     );
-
-//     if (!confirmDelete) return;
-
-//     const res = await fetch(
-//       `http://localhost:8000/dashboard/my-listings/${listing._id}`,
-//       {
-//         method: "DELETE",
-//       }
-//     );
-
-//     if (res.ok) {
-//       router.refresh();
-//     }
-//   };
-
   return (
-  <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+   <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
   {/* Studio image */}
   <Image
     src={listing.imageUrl || "/images/studio-placeholder.png"}

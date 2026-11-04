@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 // Form props
 interface FormCardProps {
@@ -56,6 +57,7 @@ export default function FormCard({
   userName,
   userEmail,
 }: FormCardProps) {
+    const router= useRouter()
   // Initial form values
   const initialForm = {
     title: "",
@@ -111,8 +113,9 @@ export default function FormCard({
 
     const data = await res.json();
     console.log(data);
+    if(res.ok) router.push("/dashboard/my-listings")
   };
-
+  
   // Reset form
   const handleReset = () => {
     setForm(initialForm);
