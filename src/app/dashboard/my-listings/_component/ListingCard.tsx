@@ -4,7 +4,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Edit, MapPin, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 export interface IListing {
   _id: string;
   title: string;
@@ -17,6 +27,7 @@ export interface IListing {
   amenities: string[];
   overview: string;
 }
+
 interface IListingCardProps {
   listing: IListing;
 }
@@ -81,26 +92,50 @@ const handleDelete = async () => {
       <span>Deposit: ${listing.securityDeposit}</span>
     </div>
 
-    {/* Action buttons */}
-    <div className="flex gap-2 border-t border-slate-200 pt-2 dark:border-slate-800">
-      <Link
-        href={`/studios/edit/${listing._id}`}
-        className="flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-lg bg-primary px-2 py-2 text-xs font-medium text-white transition hover:opacity-90"
-      >
-        <Edit size={14} />
-        Edit
-      </Link>
+ {/* Action buttons */}
+<AlertDialog>
+  <div className="flex gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
+    <Link
+      href={`/studios/edit/${listing._id}`}
+      className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2.5 text-sm font-medium text-white transition hover:opacity-90"
+    >
+      <Edit size={15} />
+      Edit Studio
+    </Link>
 
-    <button
-  onClick={handleDelete}
-  className="flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-lg border border-red-200 px-2 py-2 text-xs font-medium text-red-600 transition hover:bg-red-50 dark:border-red-900 dark:hover:bg-red-950"
->
-  <Trash2 size={14} />
-  Delete
-</button>
+    <AlertDialogTrigger className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-100 dark:border-red-900 dark:bg-red-950/30 dark:text-red-400 dark:hover:bg-red-950/60">
+      <Trash2 size={15} />
+      Delete
+    </AlertDialogTrigger>
+  </div>
+
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>
+        Are you absolutely sure?
+      </AlertDialogTitle>
+      <AlertDialogDescription>
+        This action cannot be undone. This will permanently
+        delete this studio from your database.
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+
+    <AlertDialogFooter>
+      <AlertDialogCancel className="cursor-pointer">
+        Cancel
+      </AlertDialogCancel>
+
+      <AlertDialogAction
+        className="cursor-pointer bg-red-600 text-white hover:bg-red-700"
+        onClick={handleDelete}
+      >
+        Delete Studio
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
     </div>
   </div>
-</div>
   );
 };
 export default ListingCard;

@@ -1,7 +1,9 @@
+'use client'
 import Image from "next/image";
 import { CalendarDays, Clock, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 export interface IBooking {
   _id: string;
   studioId: string;
@@ -35,25 +37,24 @@ const statusStyles = {
 };
 
 const BookingCard = ({ booking }: IBookingCardProps) => {
-  // Cancel booking
-  const handleCancel = async () => {
-    const confirmCancel = window.confirm(
-      "Are you sure you want to cancel this booking?"
-    );
+  const router = useRouter();
 
-    if (!confirmCancel) return;
-
-    const res = await fetch(
-      `http://localhost:8000/dashboard/my-bookings/${booking._id}/cancel`,
-      {
-        method: "PATCH",
-      }
-    );
-
-    if (res.ok) {
-      window.location.reload();
+// Cancel booking
+const handleCancel = async () => {
+  const res = await fetch(
+    `http://localhost:8000/dashboard/my-bookings/${booking._id}/cancel`,
+    {
+      method: "PATCH",
     }
-  };
+  );
+
+  if (res.ok) {
+    toast.success("Booking cancelled successfully!");
+    router.refresh();
+  } else {
+    toast.error("Failed to cancel booking!");
+  }
+};
 
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
