@@ -1,7 +1,9 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Edit, Trash2, MapPin } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Edit, MapPin, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 export interface IListing {
   _id: string;
@@ -19,6 +21,20 @@ interface IListingCardProps {
   listing: IListing;
 }
 const ListingCard = ({ listing }: IListingCardProps) => {
+  const router = useRouter();
+
+// Delete studio
+const handleDelete = async () => {
+  const res = await fetch(`http://localhost:8000/studios/${listing._id}`, {
+    method: "DELETE",
+  });
+ if (res.ok) {
+  toast.success("Studio deleted successfully!");
+  router.refresh();
+} else {
+  toast.error("Failed to delete studio!");
+}
+};
   return (
    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
   {/* Studio image */}
@@ -75,12 +91,13 @@ const ListingCard = ({ listing }: IListingCardProps) => {
         Edit
       </Link>
 
-      <button
-        className="flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-lg border border-red-200 px-2 py-2 text-xs font-medium text-red-600 transition hover:bg-red-50 dark:border-red-900 dark:hover:bg-red-950"
-      >
-        <Trash2 size={14} />
-        Delete
-      </button>
+    <button
+  onClick={handleDelete}
+  className="flex flex-1 cursor-pointer items-center justify-center gap-1 rounded-lg border border-red-200 px-2 py-2 text-xs font-medium text-red-600 transition hover:bg-red-50 dark:border-red-900 dark:hover:bg-red-950"
+>
+  <Trash2 size={14} />
+  Delete
+</button>
     </div>
   </div>
 </div>

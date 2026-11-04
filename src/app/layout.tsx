@@ -4,7 +4,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import "./globals.css";
-
+import { Toaster } from "@/components/ui/sonner";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -35,6 +35,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body className={`${inter.variable} ${josefinSans.variable} flex min-h-screen flex-col antialiased`}>
         <ThemeProvider>
+            <Toaster position="top-right" />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
