@@ -5,19 +5,18 @@ import { headers } from "next/headers";
 
 const BookingPage = async () => {
 
-  
 const jwtToken = await auth.api.getToken({
-    headers: await headers()
-  })
-  console.log(jwtToken?.token)
-  
-  // Fetch booking data
-  const res = await fetch(`http://localhost:8000/dashboard/my-bookings`,{
-    headers:{
-      authorization: jwtToken?.token
-    }
-  });
-  const bookings: IBooking[] = await res.json();
+  headers: await headers(), // Get request headers
+});
+const token = jwtToken?.token; // Extract JWT token
+
+// Fetch booking data
+const res = await fetch(`http://localhost:8000/dashboard/my-bookings`, {
+  headers: {
+    authorization: `Bearer ${token}`, // Send bearer token
+  },
+});
+const bookings: IBooking[] = await res.json(); // Parse booking data
 
 
   return (
