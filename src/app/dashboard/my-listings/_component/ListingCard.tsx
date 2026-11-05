@@ -94,16 +94,16 @@ const handleDelete = async () => {
 
  {/* Action buttons */}
 <AlertDialog>
-  <div className="flex gap-2 border-t border-slate-200 pt-3 dark:border-slate-800">
+  <div className="flex gap-3 border-t border-slate-200 pt-3 dark:border-slate-800">
     <Link
       href={`/studios/edit/${listing._id}`}
-      className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-3 py-2.5 text-sm font-medium text-white transition hover:opacity-90"
+      className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary px-1.5 py-1.5 text-sm font-medium text-white transition hover:opacity-90"
     >
       <Edit size={15} />
       Edit Studio
     </Link>
 
-    <AlertDialogTrigger className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-100 dark:border-red-900 dark:bg-red-950/30 dark:text-red-400 dark:hover:bg-red-950/60">
+    <AlertDialogTrigger className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-red-200 bg-red-50 px-1.5 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 dark:border-red-900 dark:bg-red-950/30 dark:text-red-400 dark:hover:bg-red-950/60">
       <Trash2 size={15} />
       Delete
     </AlertDialogTrigger>
