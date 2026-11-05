@@ -7,7 +7,6 @@ import { Spinner } from "@/components/shared/spinner";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {getTokenFromClient} from "@/lib/getTokenFromClient"
-import { toast } from "sonner";
 export interface IBooking {
   _id: string;
   studioId: string;

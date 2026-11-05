@@ -1,12 +1,17 @@
+
 import ListingCard, { IListing } from "./_component/ListingCard";
-import {getTokenFromServer} from "@/lib/getTokenFromServer"
+import ListingEmptyState from "./_component/ListingEmptyState";
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
+
 const ListingPage = async () => {
-   const token = await getTokenFromServer()
-  const res = await fetch(`http://localhost:8000/dashboard/my-listings`,{
-     headers: {
-    authorization: `Bearer ${token}`, // Send bearer token
-  },
+  const token = await getTokenFromServer();
+
+  const res = await fetch(`http://localhost:8000/dashboard/my-listings`, {
+    headers: {
+      authorization: `Bearer ${token}`, // Send bearer token
+    },
   });
+
   const listings = await res.json();
 
   return (
@@ -16,11 +21,15 @@ const ListingPage = async () => {
           My Listings
         </h1>
 
-        <div className="grid gap-5 lg:gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {listings.map((listing: IListing) => (
-            <ListingCard key={listing._id} listing={listing} />
-          ))}
-        </div>
+        {listings.length > 0 ? (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {listings.map((listing: IListing) => (
+              <ListingCard key={listing._id} listing={listing} />
+            ))}
+          </div>
+        ) : (
+          <ListingEmptyState />
+        )}
       </div>
     </div>
   );

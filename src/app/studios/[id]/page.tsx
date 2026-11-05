@@ -1,5 +1,10 @@
+
 import StudioDetailsContent from "@/components/studios/studio-details-content";
-import {getTokenFromServer} from "@/lib/getTokenFromServer"
+import { getTokenFromServer } from "@/lib/getTokenFromServer";
+import Link from "next/link";
+import { Building2, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 export interface IStudio {
   _id: string;
   title: string;
@@ -21,19 +26,47 @@ const StudioDetails = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-     const token = await getTokenFromServer()
-  const res = await fetch(`http://localhost:8000/studios/${id}`,{
-     headers: {
-    authorization: `Bearer ${token}`, // Send bearer token
-  },
+  const token = await getTokenFromServer();
+
+  const res = await fetch(`http://localhost:8000/studios/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
   });
 
   if (!res.ok) {
     throw new Error("Failed to fetch studio details");
   }
 
-  const data: IStudio = await res.json();   // Parse studio response
-  console.log(data)
+  const data: IStudio | null = await res.json();
+
+  if (!data || !data._id) {
+    return (
+      <div className="flex min-h-[70vh] flex-col items-center justify-center px-6 text-center">
+        <div className="mb-6 flex size-20 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+          <Building2 className="size-10" />
+        </div>
+
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
+          No Studio Found
+        </h2>
+
+        <p className="mt-3 max-w-md text-sm leading-7 text-muted-foreground">
+          This studio is currently unavailable or may have been removed.
+          Explore other creative spaces on StudioSpace.
+        </p>
+
+        <Button asChild className="mt-6 cursor-pointer gap-2">
+          <Link href="/studios">
+            <Search className="size-4" />
+            Explore Studios
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+
   return <StudioDetailsContent studio={data} />;
 };
+
 export default StudioDetails;

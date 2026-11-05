@@ -1,6 +1,9 @@
 import BookingCard, { IBooking } from "./_component/BookingCard";
 import { CalendarDays, ClipboardList } from "lucide-react";
 import {getTokenFromServer} from "@/lib/getTokenFromServer"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 const BookingPage = async () => {
 
   const token = await getTokenFromServer()
@@ -69,6 +72,12 @@ const bookings: IBooking[] = await res.json(); // Parse booking data
               You haven&apos;t booked any creative studios yet. Explore available
               studios and find the perfect space for your next project.
             </p>
+            <Button asChild className="mt-6 cursor-pointer gap-2">
+  <Link href="/studios">
+    Explore Studios
+    <ArrowRight className="size-4" />
+  </Link>
+</Button>
           </div>
         )}
       </div>
