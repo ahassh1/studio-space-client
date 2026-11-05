@@ -9,7 +9,7 @@ import {
   CircleDollarSign,
   UserRound,
 } from "lucide-react";
-
+import { authClient } from "@/lib/auth-client"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -102,11 +102,13 @@ export default function FormCard({
   // Submit studio details
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+   const {data, error} = await authClient.token()
+   const token = data?.token
     const res = await fetch("http://localhost:8000/dashboard/add-studio", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+         authorization: `Bearer ${token}`, // Send bearer token
       },
       body: JSON.stringify(form),
     });
