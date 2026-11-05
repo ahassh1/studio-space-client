@@ -11,8 +11,8 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
 
-// const HERO_VIDEO =
-//   "https://videos.pexels.com/video-files/4985238/4985238-hd_1920_1080_25fps.mp4";
+const HERO_VIDEO =
+  "https://videos.pexels.com/video-files/4985238/4985238-hd_1920_1080_25fps.mp4";
 
 interface HeroSlide {
   kind: "video" | "image";
@@ -23,14 +23,14 @@ interface HeroSlide {
 }
 
 const slides: HeroSlide[] = [
-  // {
-  //   kind: "video",
-  //   media: HERO_VIDEO,
-  //   eyebrow: "Studios by the hour",
-  //   title: "Find the space where your vision comes to life.",
-  //   description:
-  //     "Book photo studios, sound stages, and podcast rooms from verified hosts — instantly, by the hour.",
-  // },
+  {
+    kind: "video",
+    media: HERO_VIDEO,
+    eyebrow: "Studios by the hour",
+    title: "Find the space where your vision comes to life.",
+    description:
+      "Book photo studios, sound stages, and podcast rooms from verified hosts — instantly, by the hour.",
+  },
   {
     kind: "image",
     media:

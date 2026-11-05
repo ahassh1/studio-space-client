@@ -6,6 +6,7 @@ import { Spinner } from "@/components/shared/spinner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -97,32 +98,37 @@ const [form, setForm] = useState({
     }
   };
 
-  // Update studio
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+// Update studio
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
 
-    if (saving) return;
+  if (saving) return;
 
-    setSaving(true);
+  setSaving(true);
 
-    try {
-      const token = await getTokenFromClient()
-      const res = await fetch(`http://localhost:8000/studios/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`, // Send bearer token
-        },
-        body: JSON.stringify(form),
-      });
+  try {
+    const token = await getTokenFromClient();
+    const res = await fetch(`http://localhost:8000/studios/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(form),
+    });
 
-      if (res.ok) {
-        router.push("/dashboard/my-listings");
-      }
-    } finally {
+    if (res.ok) {
+      toast.success("Studio updated successfully!");
+      router.push("/dashboard/my-listings");
+    } else {
+      toast.error("Failed to update studio!");
       setSaving(false);
     }
-  };
+  } catch {
+    toast.error("Something went wrong!");
+    setSaving(false);
+  }
+};
 
   return (
     <main className="min-h-screen bg-background px-4 py-5">

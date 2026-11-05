@@ -7,6 +7,7 @@ import { Spinner } from "@/components/shared/spinner";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {getTokenFromClient} from "@/lib/getTokenFromClient"
+import { toast } from "sonner";
 export interface IBooking {
   _id: string;
   studioId: string;
@@ -43,34 +44,38 @@ const BookingCard = ({ booking }: IBookingCardProps) => {
   const router = useRouter();
   const [cancelling, setCancelling] = useState(false);
 
-  // Cancel booking
-  const handleCancel = async () => {
-    if (cancelling) return;
+ // Cancel booking
+const handleCancel = async () => {
+  if (cancelling) return;
 
-    setCancelling(true);
+  setCancelling(true);
 
-    try {
-      const token = await getTokenFromClient()
-      const res = await fetch(`http://localhost:8000/dashboard/my-bookings/${booking._id}/cancel`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${token}`, // Send bearer token
-          },
-        }
-      );
-
-      if (res.ok) {
-        toast.success("Booking cancelled successfully!");
-        router.refresh();
-      } else {
-        toast.error("Failed to cancel booking!");
+  try {
+    const token = await getTokenFromClient();
+    const res = await fetch(
+      `http://localhost:8000/dashboard/my-bookings/${booking._id}/cancel`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
       }
-    } finally {
-      setCancelling(false);
+    );
+
+    if (res.ok) {
+      toast.success("Booking cancelled successfully!");
+      router.refresh();
+    } else {
+      toast.error("Failed to cancel booking!");
     }
-  };
+  } catch {
+    toast.error("Something went wrong!");
+    setCancelling(false);
+  }
+
+  setCancelling(false);
+};
 
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">

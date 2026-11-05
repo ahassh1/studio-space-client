@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
+import { toast } from "sonner";
 
 const Login = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,41 +21,49 @@ const Login = () => {
 
     setIsSubmitting(true);
 
-    try {
-      // Get form data
-      const formData = new FormData(e.target);
+  try {
+  // Get form data
+  const formData = new FormData(e.target);
 
-      // Convert form data to object
-      const user = Object.fromEntries(formData.entries()) as {
-        email: string;
-        password: string;
-      };
-      // Login user
-      const { data, error } = await authClient.signIn.email({
-        ...user,
-      });
-
-      if (error) throw new Error(error.message);
-      if (data) redirect("/");
-    } finally {
-      setIsSubmitting(false);
-    }
+  // Convert form data to object
+  const user = Object.fromEntries(formData.entries()) as {
+    email: string;
+    password: string;
   };
-  // Handle Google login
-  const handleGoogleSignIn = async () => {
-    if (isGoogleLoading) return;
 
-    setIsGoogleLoading(true);
+  // Login user
+  const { data, error } = await authClient.signIn.email({
+    ...user,
+  });
 
-    try {
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/",
-      });
-    } finally {
-      setIsGoogleLoading(false);
-    }
-  };
+  if (error) throw new Error(error.message);
+
+  if (data) {
+    toast.success("Login successful!");
+    redirect("/");
+  }
+} catch (error) {
+  toast.error(error instanceof Error ? error.message : "Login failed!");
+  setIsSubmitting(false);
+}
+};
+
+// Handle Google login
+const handleGoogleSignIn = async () => {
+  if (isGoogleLoading) return;
+
+  setIsGoogleLoading(true);
+
+  try {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+  } catch {
+    toast.error("Google login failed!");
+    setIsGoogleLoading(false);
+  }
+};
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4 py-10">
