@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/shared/spinner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -52,6 +53,9 @@ export default function UpdateStudioForm({
 }: UpdateStudioFormProps) {
   const router = useRouter();
 
+  // Submission state
+  const [saving, setSaving] = useState(false);
+
   // Store form data
 const [form, setForm] = useState({
   ...studio,
@@ -96,18 +100,27 @@ const [form, setForm] = useState({
   // Update studio
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-       const token = await getTokenFromClient()
-    const res = await fetch(`http://localhost:8000/studios/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-         authorization: `Bearer ${token}`, // Send bearer token
-      },
-      body: JSON.stringify(form),
-    });
 
-    if (res.ok) {
-      router.push("/dashboard/my-listings");
+    if (saving) return;
+
+    setSaving(true);
+
+    try {
+      const token = await getTokenFromClient()
+      const res = await fetch(`http://localhost:8000/studios/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`, // Send bearer token
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (res.ok) {
+        router.push("/dashboard/my-listings");
+      }
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -276,9 +289,22 @@ const [form, setForm] = useState({
 
           {/* Form actions */}
           <div className="flex justify-end border-t pt-3">
-            <Button type="submit" className="cursor-pointer">
-              <Save className="size-4" />
-              Update Studio
+            <Button
+              type="submit"
+              disabled={saving}
+              className="cursor-pointer"
+            >
+              {saving ? (
+                <>
+                  <Spinner size="sm" />
+                  Updating...
+                </>
+              ) : (
+                <>
+                  <Save className="size-4" />
+                  Update Studio
+                </>
+              )}
             </Button>
           </div>
         </form>

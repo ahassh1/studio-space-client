@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/shared/logo";
+import { LinkPending } from "@/components/shared/link-pending";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -71,7 +72,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className={`cursor-pointer text-sm transition-colors ${
+              className={`inline-flex cursor-pointer items-center gap-1.5 text-sm transition-colors ${
                 pathname === link.href ||
                 (link.href === "/studios" &&
                   pathname.startsWith("/studios/"))
@@ -80,6 +81,7 @@ export function Header() {
               }`}
             >
               {link.name}
+              <LinkPending />
             </Link>
           ))}
         </nav>
@@ -220,7 +222,7 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`cursor-pointer text-sm transition-colors ${
+                className={`flex cursor-pointer items-center justify-between text-sm transition-colors ${
                   pathname === link.href ||
                   (link.href === "/studios" &&
                     pathname.startsWith("/studios/"))
@@ -229,6 +231,7 @@ export function Header() {
                 }`}
               >
                 {link.name}
+                <LinkPending />
               </Link>
             ))}
 

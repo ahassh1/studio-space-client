@@ -10,6 +10,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/shared/spinner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {getTokenFromClient} from "@/lib/getTokenFromClient"
@@ -58,6 +59,9 @@ export default function FormCard({
   userEmail,
 }: FormCardProps) {
     const router= useRouter()
+  // Submission state
+  const [submitting, setSubmitting] = useState(false);
+
   // Initial form values
   const initialForm = {
     title: "",
@@ -102,20 +106,28 @@ export default function FormCard({
   // Submit studio details
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-   
-     const token = await getTokenFromClient()
-    const res = await fetch("http://localhost:8000/dashboard/add-studio", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-         authorization: `Bearer ${token}`, // Send bearer token
-      },
-      body: JSON.stringify(form),
-    });
 
-    const data = await res.json();
-    console.log(data);
-    if(res.ok) router.push("/dashboard/my-listings")
+    if (submitting) return;
+
+    setSubmitting(true);
+
+    try {
+      const token = await getTokenFromClient()
+      const res = await fetch("http://localhost:8000/dashboard/add-studio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`, // Send bearer token
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      console.log(data);
+      if (res.ok) router.push("/dashboard/my-listings")
+    } finally {
+      setSubmitting(false);
+    }
   };
   
   // Reset form
@@ -420,15 +432,29 @@ export default function FormCard({
               type="button"
               variant="outline"
               onClick={handleReset}
+              disabled={submitting}
               className="cursor-pointer"
             >
               <Trash2 className="size-4" />
               Reset Form
             </Button>
 
-            <Button type="submit" className="cursor-pointer">
-              <Plus className="size-4" />
-              Add Studio to List
+            <Button
+              type="submit"
+              disabled={submitting}
+              className="cursor-pointer"
+            >
+              {submitting ? (
+                <>
+                  <Spinner size="sm" />
+                  Adding Studio...
+                </>
+              ) : (
+                <>
+                  <Plus className="size-4" />
+                  Add Studio to List
+                </>
+              )}
             </Button>
           </div>
         </form>

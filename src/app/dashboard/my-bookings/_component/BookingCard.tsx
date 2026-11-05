@@ -1,7 +1,9 @@
 'use client'
+import { useState } from "react";
 import Image from "next/image";
 import { CalendarDays, Clock, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/shared/spinner";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {getTokenFromClient} from "@/lib/getTokenFromClient"
@@ -39,26 +41,36 @@ const statusStyles = {
 
 const BookingCard = ({ booking }: IBookingCardProps) => {
   const router = useRouter();
+  const [cancelling, setCancelling] = useState(false);
+
   // Cancel booking
   const handleCancel = async () => {
-  const token = await getTokenFromClient()
-  const res = await fetch(`http://localhost:8000/dashboard/my-bookings/${booking._id}/cancel`,
-    {
-      method: "PATCH",
-         headers: {
-        "Content-Type": "application/json",
-         authorization: `Bearer ${token}`, // Send bearer token
-      },
-    }
-  );
+    if (cancelling) return;
 
-  if (res.ok) {
-    toast.success("Booking cancelled successfully!");
-    router.refresh();
-  } else {
-    toast.error("Failed to cancel booking!");
-  }
-};
+    setCancelling(true);
+
+    try {
+      const token = await getTokenFromClient()
+      const res = await fetch(`http://localhost:8000/dashboard/my-bookings/${booking._id}/cancel`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`, // Send bearer token
+          },
+        }
+      );
+
+      if (res.ok) {
+        toast.success("Booking cancelled successfully!");
+        router.refresh();
+      } else {
+        toast.error("Failed to cancel booking!");
+      }
+    } finally {
+      setCancelling(false);
+    }
+  };
 
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
@@ -124,10 +136,20 @@ const BookingCard = ({ booking }: IBookingCardProps) => {
               variant="outline"
               size="sm"
               onClick={handleCancel}
+              disabled={cancelling}
               className="cursor-pointer border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 dark:border-red-900 dark:hover:bg-red-950"
             >
-              <XCircle size={15} />
-              Cancel Booking
+              {cancelling ? (
+                <>
+                  <Spinner size="sm" />
+                  Cancelling...
+                </>
+              ) : (
+                <>
+                  <XCircle size={15} />
+                  Cancel Booking
+                </>
+              )}
             </Button>
           )}
         </div>

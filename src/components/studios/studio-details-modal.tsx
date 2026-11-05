@@ -2,6 +2,7 @@
 import { useState, type FormEvent } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/shared/spinner";
 import type { IStudio } from "@/app/studios/[id]/page";
 import { useRouter } from "next/navigation";
 import {getTokenFromClient} from "@/lib/getTokenFromClient"
@@ -98,8 +99,9 @@ const bookingData = {
           <button
             type="button"
             onClick={onClose}
+            disabled={loading}
             aria-label="Close booking modal"
-            className="rounded-full p-2 hover:bg-muted"
+            className="rounded-full p-2 hover:bg-muted disabled:pointer-events-none disabled:opacity-50"
           >
             <X className="size-5" />
           </button>
@@ -205,7 +207,14 @@ const bookingData = {
             disabled={loading}
             className="w-full cursor-pointer"
           >
-            {loading ? "Submitting..." : "Add Booking"}
+            {loading ? (
+              <>
+                <Spinner size="sm" />
+                Submitting...
+              </>
+            ) : (
+              "Add Booking"
+            )}
           </Button>
         </form>
       </div>

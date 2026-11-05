@@ -1,9 +1,11 @@
 "use client";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Edit, MapPin, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { Spinner } from "@/components/shared/spinner";
 import {getTokenFromClient} from "@/lib/getTokenFromClient"
 import {
   AlertDialog,
@@ -34,25 +36,34 @@ interface IListingCardProps {
 }
 const ListingCard = ({ listing }: IListingCardProps) => {
   const router = useRouter();
+  const [deleting, setDeleting] = useState(false);
 
   // Delete studio
   const handleDelete = async () => {
-  const token = await getTokenFromClient()
-  const res = await fetch(`http://localhost:8000/studios/${listing._id}`, {
-    method: "DELETE",
-       headers: {
-        "Content-Type": "application/json",
-         authorization: `Bearer ${token}`, // Send bearer token
-      },
-     });
+    if (deleting) return;
 
- if (res.ok) {
-  toast.success("Studio deleted successfully!");
-  router.refresh();
-} else {
-  toast.error("Failed to delete studio!");
-}
-};
+    setDeleting(true);
+
+    try {
+      const token = await getTokenFromClient()
+      const res = await fetch(`http://localhost:8000/studios/${listing._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`, // Send bearer token
+        },
+      });
+
+      if (res.ok) {
+        toast.success("Studio deleted successfully!");
+        router.refresh();
+      } else {
+        toast.error("Failed to delete studio!");
+      }
+    } finally {
+      setDeleting(false);
+    }
+  };
   return (
    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
   {/* Studio image */}
@@ -133,10 +144,18 @@ const ListingCard = ({ listing }: IListingCardProps) => {
       </AlertDialogCancel>
 
       <AlertDialogAction
+        disabled={deleting}
         className="cursor-pointer bg-red-600 text-white hover:bg-red-700"
         onClick={handleDelete}
       >
-        Delete Studio
+        {deleting ? (
+          <>
+            <Spinner size="sm" />
+            Deleting...
+          </>
+        ) : (
+          "Delete Studio"
+        )}
       </AlertDialogAction>
     </AlertDialogFooter>
   </AlertDialogContent>

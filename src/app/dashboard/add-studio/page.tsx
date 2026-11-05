@@ -1,6 +1,7 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
+import { PageLoader } from "@/components/shared/spinner";
 import FormCard from "./_component/FormCard";
 
 export default function AddStudioPage() {
@@ -9,11 +10,7 @@ export default function AddStudioPage() {
 
   // Wait for session
   if (isPending) {
-    return (
-      <div className="flex min-h-[70vh] items-center justify-center text-sm text-muted-foreground">
-        Loading...
-      </div>
-    );
+    return <PageLoader label="Checking your session..." className="min-h-[70vh]" />;
   }
 
   if (!session) {
