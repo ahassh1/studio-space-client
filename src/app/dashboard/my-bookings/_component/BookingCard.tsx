@@ -4,6 +4,7 @@ import { CalendarDays, Clock, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import {getTokenFromClient} from "@/lib/getTokenFromClient"
 export interface IBooking {
   _id: string;
   studioId: string;
@@ -38,13 +39,16 @@ const statusStyles = {
 
 const BookingCard = ({ booking }: IBookingCardProps) => {
   const router = useRouter();
-
-// Cancel booking
-const handleCancel = async () => {
-  const res = await fetch(
-    `http://localhost:8000/dashboard/my-bookings/${booking._id}/cancel`,
+  // Cancel booking
+  const handleCancel = async () => {
+  const token = await getTokenFromClient()
+  const res = await fetch(`http://localhost:8000/dashboard/my-bookings/${booking._id}/cancel`,
     {
       method: "PATCH",
+         headers: {
+        "Content-Type": "application/json",
+         authorization: `Bearer ${token}`, // Send bearer token
+      },
     }
   );
 

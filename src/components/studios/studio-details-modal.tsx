@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { IStudio } from "@/app/studios/[id]/page";
 import { useRouter } from "next/navigation";
-
+import {getTokenFromClient} from "@/lib/getTokenFromClient"
 interface StudioDetailsModalProps {
   studio: IStudio;
   isOpen: boolean;
@@ -31,14 +31,8 @@ export default function StudioDetailsModal({
 
   // Calculate booking price
   const totalPrice = Number(studio.hourlyRate) * hours;
-
-  // Handle booking submission
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
-
-// Prepare booking data
+ 
+  // Prepare booking data
 const bookingData = {
   studioId: studio._id,
   studioTitle: studio.title,
@@ -52,21 +46,29 @@ const bookingData = {
   totalPrice,
   securityDeposit: studio.securityDeposit,
 };
+  // Handle booking submission
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+          const token = await getTokenFromClient()
+    setLoading(true);
+    setMessage("");
     // Send booking request
     const res = await fetch("http://localhost:8000/dashboard/my-bookings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+             authorization: `Bearer ${token}`, // Send bearer token
       },
       body: JSON.stringify(bookingData),
     });
 
-    // Check response status
     if (!res.ok) {
-      setMessage("Booking submission failed.");
-      setLoading(false);
-      return;
-    }
+  const error = await res.json();
+  console.log("Booking Error:", error);
+  setMessage(error.msg || "Booking submission failed.");
+  setLoading(false);
+  return;
+}
 
     // Show success message
     setMessage("Booking submitted successfully!");

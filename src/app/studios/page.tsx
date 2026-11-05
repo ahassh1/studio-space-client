@@ -1,6 +1,7 @@
 import StudioCard, { IStudio } from "@/components/studios/studio-card";
 const StudioPage = async () => {
-  const res = await fetch("http://localhost:8000/studios");
+
+  const res = await fetch(`http://localhost:8000/studios`);
   const data: IStudio[] = await res.json();
 
   return (

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Edit, MapPin, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import {getTokenFromClient} from "@/lib/getTokenFromClient"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,11 +35,17 @@ interface IListingCardProps {
 const ListingCard = ({ listing }: IListingCardProps) => {
   const router = useRouter();
 
-// Delete studio
-const handleDelete = async () => {
+  // Delete studio
+  const handleDelete = async () => {
+  const token = await getTokenFromClient()
   const res = await fetch(`http://localhost:8000/studios/${listing._id}`, {
     method: "DELETE",
-  });
+       headers: {
+        "Content-Type": "application/json",
+         authorization: `Bearer ${token}`, // Send bearer token
+      },
+     });
+
  if (res.ok) {
   toast.success("Studio deleted successfully!");
   router.refresh();

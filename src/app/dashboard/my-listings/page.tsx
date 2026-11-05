@@ -1,7 +1,12 @@
 import ListingCard, { IListing } from "./_component/ListingCard";
-
+import {getTokenFromServer} from "@/lib/getTokenFromServer"
 const ListingPage = async () => {
-  const res = await fetch("http://localhost:8000/dashboard/my-listings");
+   const token = await getTokenFromServer()
+  const res = await fetch(`http://localhost:8000/dashboard/my-listings`,{
+     headers: {
+    authorization: `Bearer ${token}`, // Send bearer token
+  },
+  });
   const listings = await res.json();
 
   return (

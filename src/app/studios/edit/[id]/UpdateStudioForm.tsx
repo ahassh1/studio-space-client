@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { ArrowLeft, Save } from "lucide-react";
 import type { IStudioForm } from "./page";
+import {getTokenFromClient} from "@/lib/getTokenFromClient"
 
 // Form props
 interface UpdateStudioFormProps {
@@ -52,8 +53,20 @@ export default function UpdateStudioForm({
   const router = useRouter();
 
   // Store form data
-  const [form, setForm] = useState(studio);
-
+const [form, setForm] = useState({
+  ...studio,
+  title: studio.title || "",
+  category: studio.category || "",
+  overview: studio.overview || "",
+  hourlyRate: studio.hourlyRate || "",
+  securityDeposit: studio.securityDeposit || "",
+  maxCapacity: studio.maxCapacity || "",
+  location: studio.location || "",
+  imageUrl: studio.imageUrl || "",
+  amenities: studio.amenities || [],
+  userName: studio.userName || "",
+  userEmail: studio.userEmail || "",
+});
   // Update fields
   const update = (
     field: Exclude<keyof IStudioForm, "amenities">,
@@ -83,11 +96,12 @@ export default function UpdateStudioForm({
   // Update studio
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+       const token = await getTokenFromClient()
     const res = await fetch(`http://localhost:8000/studios/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+         authorization: `Bearer ${token}`, // Send bearer token
       },
       body: JSON.stringify(form),
     });

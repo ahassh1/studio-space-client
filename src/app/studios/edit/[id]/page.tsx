@@ -1,5 +1,5 @@
 import UpdateStudioForm from "./UpdateStudioForm";
-
+import {getTokenFromServer} from "@/lib/getTokenFromServer"
 // Studio fields
 export interface IStudioForm {
   title: string;
@@ -17,8 +17,12 @@ export interface IStudioForm {
 
 // Fetch studio
 async function getStudio(id: string): Promise<IStudioForm> {
+   const token = await getTokenFromServer()
   const res = await fetch(`http://localhost:8000/studios/${id}`, {
     cache: "no-store",
+    headers: {
+    authorization: `Bearer ${token}`,
+  },
   });
 
   const data = await res.json();

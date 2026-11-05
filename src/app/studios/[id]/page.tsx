@@ -1,4 +1,5 @@
 import StudioDetailsContent from "@/components/studios/studio-details-content";
+import {getTokenFromServer} from "@/lib/getTokenFromServer"
 export interface IStudio {
   _id: string;
   title: string;
@@ -20,8 +21,12 @@ const StudioDetails = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-
-  const res = await fetch(`http://localhost:8000/studios/${id}`);
+     const token = await getTokenFromServer()
+  const res = await fetch(`http://localhost:8000/studios/${id}`,{
+     headers: {
+    authorization: `Bearer ${token}`, // Send bearer token
+  },
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch studio details");

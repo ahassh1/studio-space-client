@@ -1,15 +1,9 @@
 import BookingCard, { IBooking } from "./_component/BookingCard";
 import { CalendarDays, ClipboardList } from "lucide-react";
-import {auth} from "@/lib/auth"
-import { headers } from "next/headers";
-
+import {getTokenFromServer} from "@/lib/getTokenFromServer"
 const BookingPage = async () => {
 
-const jwtToken = await auth.api.getToken({
-  headers: await headers(), // Get request headers
-});
-const token = jwtToken?.token; // Extract JWT token
-
+  const token = await getTokenFromServer()
 // Fetch booking data
 const res = await fetch(`http://localhost:8000/dashboard/my-bookings`, {
   headers: {
