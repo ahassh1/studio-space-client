@@ -46,7 +46,7 @@ const ListingCard = ({ listing }: IListingCardProps) => {
 
     try {
       const token = await getTokenFromClient()
-      const res = await fetch(`http://localhost:8000/studios/${listing._id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios/${listing._id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

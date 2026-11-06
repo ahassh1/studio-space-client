@@ -28,7 +28,7 @@ const StudioDetails = async ({
   const { id } = await params;
   const token = await getTokenFromServer();
 
-  const res = await fetch(`http://localhost:8000/studios/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios/${id}`, {
     headers: {
       authorization: `Bearer ${token}`,
     },
@@ -56,12 +56,13 @@ const StudioDetails = async ({
           Explore other creative spaces on StudioSpace.
         </p>
 
-        <Button asChild className="mt-6 cursor-pointer gap-2">
-          <Link href="/studios">
-            <Search className="size-4" />
-            Explore Studios
-          </Link>
-        </Button>
+        <Link
+  href="/studios"
+  className="mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+>
+  <Search className="size-4" />
+  Explore Studios
+</Link>
       </div>
     );
   }

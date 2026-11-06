@@ -18,7 +18,7 @@ export interface IStudioForm {
 // Fetch studio
 async function getStudio(id: string): Promise<IStudioForm> {
    const token = await getTokenFromServer()
-  const res = await fetch(`http://localhost:8000/studios/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios/${id}`, {
     cache: "no-store",
     headers: {
     authorization: `Bearer ${token}`,

@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import StudioCard, { IStudio } from "../studios/studio-card";
 
 export async function FeaturedStudios() {
-  const res = await fetch("http://localhost:8000/studios");
+const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`, {
+  cache: "no-store",
+});
   const data: IStudio[] = await res.json();
 
   return (

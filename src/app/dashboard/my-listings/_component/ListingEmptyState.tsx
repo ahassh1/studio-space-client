@@ -22,14 +22,14 @@ const ListingEmptyState = () => {
         creators and start receiving booking requests.
       </p>
 
-      {/* CTA Button */}
-      <Button asChild className="mt-7 cursor-pointer gap-2">
-        <Link href="/dashboard/add-studio">
-          <Plus className="size-4" />
-          Add Your First Studio
-          <ArrowRight className="size-4" />
-        </Link>
-      </Button>
+      <Link
+  href="/dashboard/add-studio"
+  className="mt-7 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+>
+  <Plus className="size-4" />
+  Add Your First Studio
+  <ArrowRight className="size-4" />
+</Link>
 
       <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
         Your next creative opportunity starts here.

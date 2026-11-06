@@ -3,7 +3,6 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { PageLoader } from "@/components/shared/spinner";
 import FormCard from "./_component/FormCard";
-import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
 
 export default function AddStudioPage() {
@@ -22,13 +21,13 @@ export default function AddStudioPage() {
         <p className="mt-2 text-sm text-muted-foreground">
           Please login to add your studio listing.
         </p>
-
-        <Button asChild className="mt-5 cursor-pointer gap-2">
-          <Link href="/login">
-            <LogIn className="size-4" />
-            Login to Continue
-          </Link>
-        </Button>
+           <Link
+  href="/login"
+  className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+>
+  <LogIn className="size-4" />
+  Login to Continue
+</Link>
       </div>
     );
   }

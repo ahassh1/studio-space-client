@@ -2,13 +2,12 @@ import BookingCard, { IBooking } from "./_component/BookingCard";
 import { CalendarDays, ClipboardList } from "lucide-react";
 import {getTokenFromServer} from "@/lib/getTokenFromServer"
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 const BookingPage = async () => {
 
   const token = await getTokenFromServer()
 // Fetch booking data
-const res = await fetch(`http://localhost:8000/dashboard/my-bookings`, {
+const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/my-bookings`, {
   headers: {
     authorization: `Bearer ${token}`, // Send bearer token
   },
@@ -72,12 +71,13 @@ const bookings: IBooking[] = await res.json(); // Parse booking data
               You haven&apos;t booked any creative studios yet. Explore available
               studios and find the perfect space for your next project.
             </p>
-            <Button asChild className="mt-6 cursor-pointer gap-2">
-  <Link href="/studios">
-    Explore Studios
-    <ArrowRight className="size-4" />
-  </Link>
-</Button>
+       <Link
+  href="/studios"
+  className="mt-6 md:7 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+>
+  Explore Studios
+  <ArrowRight className="size-4" />
+</Link>
           </div>
         )}
       </div>

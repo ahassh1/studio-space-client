@@ -52,7 +52,7 @@ const handleCancel = async () => {
   try {
     const token = await getTokenFromClient();
     const res = await fetch(
-      `http://localhost:8000/dashboard/my-bookings/${booking._id}/cancel`,
+      `${process.env.NEXT_PUBLIC_API_URL}/dashboard/my-bookings/${booking._id}/cancel`,
       {
         method: "PATCH",
         headers: {

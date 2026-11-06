@@ -54,7 +54,7 @@ const bookingData = {
     setLoading(true);
     setMessage("");
     // Send booking request
-    const res = await fetch("http://localhost:8000/dashboard/my-bookings", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/my-bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

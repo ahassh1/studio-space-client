@@ -10,6 +10,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { Spinner } from "@/components/shared/spinner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -103,32 +104,49 @@ export default function FormCard({
     }
   };
 
-  // Submit studio details
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+// Submit studio details
+const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
 
-    if (submitting) return;
+  if (submitting) return;
 
-    setSubmitting(true);
+  setSubmitting(true);
 
-    try {
-      const token = await getTokenFromClient()
-      const res = await fetch("http://localhost:8000/dashboard/add-studio", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`, // Send bearer token
-        },
-        body: JSON.stringify(form),
+  try {
+    const token = await getTokenFromClient();
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/add-studio`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(form),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      toast.success("Studio added successfully!", {
+        description: "Your studio is now listed on StudioSpace.",
       });
 
-      const data = await res.json();
-      console.log(data);
-      if (res.ok) router.push("/dashboard/my-listings")
-    } finally {
-      setSubmitting(false);
+      router.push("/dashboard/my-listings");
+    } else {
+      toast.error("Failed to add studio!", {
+        description: data.msg || "Please try again.",
+      });
     }
-  };
+
+    setSubmitting(false); // Reset state
+  } catch {
+    toast.error("Something went wrong!", {
+      description: "Please check your connection and try again.",
+    });
+
+    setSubmitting(false); // Reset state
+  }
+};
   
   // Reset form
   const handleReset = () => {

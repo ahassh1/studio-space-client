@@ -6,7 +6,7 @@ import { getTokenFromServer } from "@/lib/getTokenFromServer";
 const ListingPage = async () => {
   const token = await getTokenFromServer();
 
-  const res = await fetch(`http://localhost:8000/dashboard/my-listings`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/my-listings`, {
     headers: {
       authorization: `Bearer ${token}`, // Send bearer token
     },
